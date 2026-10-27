@@ -4,409 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#eef3f7">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#f4f5f2">
-<title>温湿度 · 实时观测站</title>
+<title>温湿度监测看板</title>
 <style>
-
-:root{color-scheme:light;--bg:#f4f5f2;--card:#fff;--text:#203a32;--muted:#78847e;--line:#e4e9e2;--green:#1a7456;--blue:#547ca5;--orange:#aa6429;--red:#b34d45}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{cursor:default;opacity:.42}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #82b9a0;outline-offset:4px}svg{display:block}button{touch-action:manipulation}.hidden{display:none!important}
-.shell{max-width:1220px;margin:auto;padding:30px 34px 24px}.top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:42px;height:42px;display:grid;place-items:center;background:#214b3d;color:#e2f0c8;border-radius:14px}.brand-mark svg{width:25px;height:25px}.brand strong{display:block;font-size:16px;font-weight:650;letter-spacing:1px}.brand small{display:block;margin-top:2px;color:var(--muted);font-size:9px;letter-spacing:1.7px}.top-right{display:flex;align-items:center;gap:20px}.clock{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}.badge{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:11px;font-weight:600;padding:7px 12px;background:#e8ece5;color:#738277;border-radius:30px}.badge:before{content:"";width:6px;height:6px;background:currentColor;border-radius:50%}.badge.good{background:#e5eee2;color:#337052}.badge.warn{background:#f7e9d7;color:var(--orange)}.badge.bad{background:#f8e5e2;color:var(--red)}
-.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;padding:31px 0 21px}.eyebrow{display:flex;align-items:center;gap:10px;color:#7b877d;font-size:10px;font-weight:600;letter-spacing:2px;margin-bottom:8px}.eyebrow:before{content:"";width:18px;height:1px;background:#85997d}h1{font-size:34px;font-weight:600;letter-spacing:-1px;line-height:1.3;margin:0 0 9px}.sub{font-size:12px;color:var(--muted);line-height:1.8;margin:0}.sub-sep{margin:0 8px;color:#bac4b8}.actions{display:flex;gap:8px;flex-shrink:0}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 17px;border:1px solid #dce3d8;border-radius:12px;color:#506154;background:transparent;font-size:12px;white-space:nowrap;transition:background .16s,transform .16s}.btn:hover{background:#e8ece3}.btn:active{transform:translateY(1px)}.btn.primary,#exportBtn{background:#214b3d;border-color:#214b3d;color:#fff}.btn.primary:hover,#exportBtn:hover{background:#163b2e}.btn.link{border:0;padding:0;min-height:32px;background:transparent;color:var(--green)}
-.notice{display:flex;align-items:center;gap:9px;padding:10px 13px;margin-bottom:20px;border:1px solid #e0e6dc;border-radius:10px;color:#68816b;background:#edf1e8;font-size:11px;line-height:1.7;overflow-wrap:anywhere}.notice:before{content:"";flex-shrink:0;width:5px;height:5px;border-radius:50%;background:#75a077}.notice.warn{color:#a16b37;background:#fbf0e1;border-color:#f0dfc7}.notice.bad{color:#a84e47;background:#fbece9;border-color:#efd8d2}.notice.warn:before,.notice.bad:before{background:currentColor}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}.main{min-width:0}.card{border:1px solid var(--line);background:var(--card);border-radius:21px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.metric{position:relative;isolation:isolate;overflow:hidden;padding:25px 28px 20px;min-height:246px;background:#214b3d;border-color:#214b3d;color:#f1f5e9}.metric.humidity{color:#2c5067;background:#e6edf0;border-color:#dee7ea}.metric-top{position:relative;z-index:1;display:flex;justify-content:space-between;gap:10px;align-items:center}.metric-label{display:flex;gap:11px;align-items:center;font-size:13px;font-weight:500}.metric-label small{display:block;margin-top:3px;font-size:8px;font-weight:400;letter-spacing:1.8px;color:#a8c1ab}.humidity .metric-label small{color:#8da4ad}.icon{width:37px;height:37px;border-radius:12px;display:grid;place-items:center;background:#ffffff12;color:#d5e2c0}.humidity .icon{background:#ffffff80;color:#608b9e}.icon svg{width:21px;height:21px}.sensor-chip{align-self:start;color:#a2bda7;font-size:9px;letter-spacing:1px;border:1px solid #ffffff24;border-radius:6px;padding:3px 6px}.humidity .sensor-chip{border-color:#bdcfd6;color:#6d919f}.reading{position:relative;z-index:1;display:flex;align-items:baseline;gap:9px;margin:19px 0 17px;font-variant-numeric:tabular-nums}.value{font-size:80px;font-weight:500;line-height:1.12;letter-spacing:-4px}.unit{font-size:23px;font-weight:400;white-space:nowrap;color:#b2c7b1}.humidity .unit{color:#85a0ad}.metric-art{position:absolute;z-index:0;right:23px;bottom:49px;width:93px;height:129px;color:#accaa4;opacity:.15;pointer-events:none;transform:rotate(12deg)}.humidity .metric-art{color:#6c94a5;opacity:.13;width:118px;height:136px;right:12px;transform:rotate(-12deg)}.metric-footer{position:relative;z-index:1;border-top:1px solid #ffffff21;padding-top:13px;display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#a8c2ad}.humidity .metric-footer{color:#7794a1;border-color:#cddbe1}.metric-footer .expired{color:#e8b580}.humidity .metric-footer .expired{color:#aa6429}.metric.stale .value{opacity:.55}.pulse{animation:sample-flash .5s ease-out}@keyframes sample-flash{50%{box-shadow:inset 0 0 0 1px #92ba7d}}
-.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:18px 0 25px;padding:15px 5px;background:transparent;border:0;border-radius:0}.strip>div{padding:0 22px;border-right:1px solid #dce3d7;min-width:0}.strip>div:first-child{padding-left:0}.strip>div:last-child{border:0}.strip small{display:block;font-size:10px;color:#899084;margin-bottom:4px}.strip strong{font-size:14px;font-weight:550;font-variant-numeric:tabular-nums}.strip .hint{font-size:10px;font-weight:400;color:#92998d;margin-left:7px}
-.chart-card{padding:24px 25px 16px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:25px}.section-head h2{font-size:15px;font-weight:600;letter-spacing:.5px;margin:0 0 3px}.section-head small{font-size:10px;color:#919a90}.chart-controls{display:flex;align-items:center;gap:18px}.history-tag{display:inline-flex;align-items:center;gap:5px;background:#f0f3ec;color:#718068;border-radius:6px;font-size:10px;padding:5px 8px}.history-tag svg{width:12px;height:12px}.legend{display:flex;gap:12px;font-size:10px;color:#7c8b7d}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:5px;height:5px;border-radius:50%;background:var(--green)}.legend .blue{background:var(--blue)}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.chart-block{position:relative;min-width:0}.chart-block+.chart-block{border-left:1px solid #edf0e9;padding-left:22px}.chart-title{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:500;color:#56775a;margin:0 0 7px 5px}.chart-title:before{content:"";width:5px;height:5px;background:var(--green);border-radius:50%}.chart-title.blue{color:#7d95ad}.chart-title.blue:before{background:var(--blue)}.chart-block svg{display:block;width:100%;height:auto;overflow:visible}.chart-empty{position:absolute;inset:40px 0 30px;display:grid;place-items:center;font-size:10px;color:#a0aa9d;pointer-events:none}.chart-foot{font-size:10px;line-height:1.8;color:#9aa294;margin:15px 0 0;padding-top:13px;border-top:1px solid #edf0e9}.chart-tabs{display:none}
-.log-card{padding:16px 20px;margin-top:16px;border-radius:14px;background:transparent}.log-card>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:#7e8b7c;cursor:pointer;list-style:none}.log-card>summary::-webkit-details-marker{display:none}.log-card>summary small{display:flex;align-items:center;gap:8px;font-size:10px;color:#a2aa9c}.log-card>summary small:after{content:"+";font-size:16px;line-height:1}.log-card[open]>summary small:after{content:"−"}.log{list-style:none;padding:0;margin:14px 0 0;font:10px/1.9 Consolas,"Microsoft YaHei",monospace;max-height:175px;overflow:auto}.log li{padding:5px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}.log time{color:#97a18f;margin-right:12px}.raw{font:11px/1.8 Consolas,monospace;background:#edf0e8;border:1px solid #dce3d5;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;max-height:230px;overflow:auto}.bottom{display:flex;justify-content:space-between;gap:20px;margin-top:24px;padding-top:17px;border-top:1px solid var(--line);font-size:9px;line-height:1.8;color:#a0a79b}.bottom span:first-child{color:#82917b}.side{padding:24px;min-width:0}.side h2{font-size:15px;margin:0 0 8px}.side .sub{font-size:12px}.divider{height:1px;background:var(--line);margin:22px 0}.field{display:block;margin-top:15px;font-size:12px;color:#53664f}.field span{display:block;margin-bottom:7px}.field input,.field select{width:100%;min-width:0;border:1px solid #d9e1d2;border-radius:9px;padding:10px 11px;background:#f8f9f5;color:#294733;font-size:14px}.field input::placeholder{font-size:11px;color:#93a08b}.field small,.privacy{font-size:11px;line-height:1.8;color:#84907e}.field input[readonly]{background:#edf1e7}.check{display:flex;gap:7px;align-items:center;font-size:11px;color:#839079;margin:16px 0}.check input{accent-color:var(--green)}.connect-row{display:flex;gap:8px}.connect-row .primary{flex:1}.privacy{margin:13px 0 0}.details{font-size:12px;color:#718269;margin-top:18px}.details summary{cursor:pointer;padding:3px 0}.details p,.details ol{font-size:11px;line-height:1.9;color:#84947c}.details ol{padding-left:18px}.details code{overflow-wrap:anywhere;color:#456b3e;font-size:11px}.details pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f5ed;padding:12px;border-radius:8px;font:11px/1.8 Consolas,monospace}.details a{color:var(--green)}.source-label{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#8c9985}.source-label strong{font-weight:500;color:#47603c;overflow-wrap:anywhere;text-align:right}#demoBadge{margin-left:12px;vertical-align:middle}
-@media(min-width:1500px){.shell{padding-top:42px}.intro{padding-top:40px;padding-bottom:27px}.metric{min-height:260px;padding-top:28px}.reading{margin-top:24px}.value{font-size:86px}}
-@media(max-width:1020px){.shell{padding:24px}.clock{display:none}.metric{padding:22px;min-height:232px}.value{font-size:68px}.metric-art{right:8px;width:74px}.humidity .metric-art{right:-12px;width:96px}.metric-footer{font-size:9px}.chart-grid{gap:16px}.chart-block+.chart-block{padding-left:15px}.chart-card{padding:22px 20px 16px}.layout{grid-template-columns:minmax(0,1fr) 280px}}
-@media(max-width:760px){.shell{padding:21px 20px}.top{padding-bottom:20px}.brand strong{font-size:15px}.brand small{font-size:8px;letter-spacing:1.4px}.brand-mark{width:38px;height:38px;border-radius:12px}.top-right{gap:0}.intro{align-items:flex-start;flex-direction:column;gap:18px;padding:25px 0 17px}h1{font-size:29px;margin-bottom:7px}.actions{width:100%}.actions .btn{flex:1;min-height:44px;padding:9px 8px;font-size:12px}.notice{margin-bottom:15px;font-size:11px;padding:9px 11px}.layout{grid-template-columns:minmax(0,1fr);gap:16px}.metric-grid{gap:12px}.metric{padding:19px 17px 15px;min-height:204px;border-radius:18px}.metric-top{gap:5px}.metric-label{font-size:12px;gap:8px}.metric-label small{font-size:7px;letter-spacing:1.1px}.icon{width:29px;height:29px;border-radius:9px}.icon svg{width:17px;height:17px}.sensor-chip{display:none}.reading{gap:5px;margin:22px 0 19px}.value{font-size:clamp(32px,10vw,58px);letter-spacing:-2px;line-height:1.08}.unit{font-size:15px}.humidity .unit{font-size:12px}.metric-art{width:65px;height:95px;right:3px;bottom:43px;opacity:.12}.humidity .metric-art{width:79px;height:101px;right:-8px;bottom:46px}.metric-footer{font-size:9px;flex-direction:column;gap:3px;padding-top:11px}.metric-footer>span:last-child{font-size:9px}.strip{margin:13px 0 19px;padding:12px 2px}.strip>div{padding:0 13px}.strip small{font-size:10px;white-space:nowrap}.strip strong{font-size:13px}.strip .hint{display:block;margin:3px 0 0;font-size:9px}.strip>div:last-child .hint{display:inline;margin-left:4px}.chart-card{padding:20px 16px 14px;border-radius:18px}.section-head{margin-bottom:18px}.section-head h2{font-size:14px}.section-head small{font-size:9px}.legend{display:none}.history-tag{font-size:9px;padding:5px 7px}.chart-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#f1f4ed;border-radius:10px;margin-bottom:17px}.chart-tab{min-height:44px;border:0;border-radius:7px;background:transparent;color:#93a08b;font-size:11px}.chart-tab[aria-pressed="true"]{background:#fff;color:#375a40;box-shadow:0 1px 5px #29411d0a}.chart-grid{display:block}.chart-block{display:none;min-height:190px}.chart-block.selected{display:block}.chart-block+.chart-block{border:0;padding:0}.chart-title{margin-left:0;font-size:10px}.chart-foot{font-size:9px;margin-top:9px;padding-top:11px}.log-card{margin-top:14px;padding:15px 17px}.log-card>summary{font-size:10px}.log-card>summary small{font-size:9px}.side{grid-row:2;padding:21px}.field input,.field select{font-size:16px}.bottom{display:block;margin-top:20px;padding-top:14px;font-size:9px}.bottom span{display:block;margin-bottom:4px}#demoBadge{font-size:9px;padding:5px 8px;margin-left:7px}}
-@media(max-width:370px){.shell{padding:17px 14px}.brand{gap:8px}.brand strong{font-size:14px}.brand small{font-size:7px;letter-spacing:1px}.badge{font-size:10px;padding:6px 9px}.metric{padding:17px 13px 14px;min-height:198px}.metric-label{gap:6px;font-size:11px}.icon{width:25px;height:27px}.metric-grid{gap:10px}.unit{font-size:13px}.humidity .unit{font-size:10px}.value{font-size:32px;letter-spacing:-1.8px}.reading{gap:4px}.strip>div{padding:0 10px}.strip strong{font-size:11px}.chart-card{padding:18px 13px 12px}.sub{font-size:11px}.actions{gap:6px}h1{font-size:27px}}
-@supports(padding:max(0px)){@media(max-width:760px){.shell{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(20px,env(safe-area-inset-bottom))}}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
+:root{color-scheme:light;--bg:#eef3f7;--text:#25303f;--muted:#8c96a5;--line:#edf1f5;--temp:#f3454c;--humidity:#3780f6;--green:#178545;--blue:#2861ec}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.4;cursor:default}button:focus-visible,summary:focus-visible{outline:3px solid #a8c8ff;outline-offset:3px}.hidden,[hidden]{display:none!important}.shell{max-width:1120px;margin:0 auto;padding:32px 24px 28px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:21px}.top h1{font-size:25px;line-height:1.3;margin:0;font-weight:700;letter-spacing:-.4px}.badge{display:inline-flex;gap:7px;align-items:center;flex-shrink:0;border-radius:30px;padding:9px 15px;font-size:13px;background:#e2e8ef;color:#758194;white-space:nowrap}.badge:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}.badge.good{background:#dbfce6;color:var(--green)}.badge.warn{background:#fff0d9;color:#a36c18}.badge.bad{background:#fee5e6;color:#ba3943}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-7px 0 16px;color:var(--muted);font-size:12px}.toolbar-actions{display:flex;gap:8px}.btn{border:1px solid #d7dee7;background:#fff;color:#5c687a;border-radius:9px;min-height:40px;padding:8px 12px;font-size:12px}.btn:hover{background:#f7f9fc}.notice{border:1px solid #f0d6a9;background:#fff7e8;color:#936020;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;overflow-wrap:anywhere}.notice.bad{border-color:#f0b9bf;background:#fff0f1;color:#a3323d}.card{background:#fff;border-radius:20px;box-shadow:0 2px 5px #26344907;border:1px solid #ffffffb0}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:18px}.metric{padding:25px 28px;min-width:0}.metric-label{display:flex;align-items:center;gap:7px;color:#7a8493;font-size:15px}.reading{display:flex;align-items:baseline;gap:7px;margin:8px 0 6px;white-space:nowrap;font-variant-numeric:tabular-nums}.value{font-size:64px;font-weight:700;line-height:1.2;letter-spacing:-2px;color:var(--temp)}.humidity .value{color:var(--humidity)}.unit{font-size:21px;color:#a1aab7;font-weight:400}.metric-footer{font-size:12px;color:#9ba5b3;line-height:1.9}.metric-footer time{display:block;font-variant-numeric:tabular-nums}.metric.stale .value{opacity:.55}.summary{margin:16px 0 20px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#7d8796;font-size:13px}.summary-main{display:flex;gap:20px;flex-wrap:wrap}.summary strong{color:var(--text);font-weight:650}.channels{color:var(--green)}.channels.stale{color:#a37426}.data-card{padding:26px}.data-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.data-heading h2{margin:0;font-size:21px;font-weight:700}.data-heading small{color:#a3acb8;font-size:11px}.view-tabs{display:inline-flex;gap:4px;border-radius:11px;padding:4px;background:#f1f3f5;margin-bottom:14px}.view-tab{min-height:40px;padding:7px 15px;border:0;border-radius:9px;color:#647080;background:transparent;font-size:14px}.view-tab[aria-pressed="true"]{background:#fff;box-shadow:0 2px 5px #2634490c;color:var(--text);font-weight:650}.range-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.range-tab{border:1px solid #d1d8e2;color:#626f80;background:#fff;border-radius:8px;min-height:39px;padding:6px 12px;font-size:13px;white-space:nowrap}.range-tab[aria-pressed="true"]{color:#fff;background:var(--blue);border-color:var(--blue)}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.plot{position:relative;min-width:0}.plot h3{font-size:13px;margin:3px 0 0;font-weight:600;color:var(--temp)}.plot.hum h3{color:var(--humidity)}.plot svg{display:block;width:100%;height:auto;min-height:190px}.chart-empty{position:absolute;inset:42px 0 35px;display:grid;place-items:center;color:#a5aeba;font-size:12px;pointer-events:none}.table-scroll{border:1px solid #e1e6ed;border-radius:11px;overflow:auto;max-height:475px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.details-table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:13px;font-variant-numeric:tabular-nums}.details-table th,.details-table td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.details-table th{position:sticky;top:0;z-index:1;background:#f7f9fb;color:#7c8695;font-weight:600;font-size:12px}.details-table th:first-child,.details-table td:first-child{text-align:left;width:42%}.details-table td.temp{color:var(--temp);font-weight:600}.details-table td.humidity-value{color:var(--humidity);font-weight:600}.details-table tbody tr:last-child td{border-bottom:0}.details-table .empty-row{text-align:center!important;color:#9aa5b4;white-space:normal;padding:35px 10px}.details-table small{color:#a6afba;margin-right:5px;font-size:10px}.pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0;color:#8c97a6;font-size:11px}.page-actions{display:flex;gap:7px;align-items:center}.page-actions .btn{min-height:37px;padding:7px 10px;font-size:11px}.record-note{font-size:12px;color:#9ba5b4;margin:15px 0 14px}.statistics{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:15px}.stat-line{color:#8f99a8;font-size:12px;line-height:1.8}.stat-line strong{font-weight:500;color:#616f82}.stat-line .label-temp{color:var(--temp)}.stat-line .label-hum{color:var(--humidity)}.storage-note{font-size:11px;color:#a2adbb;margin:14px 0 0;line-height:1.8}.refresh-note{font-size:11px;color:#9da7b5;margin:5px 0 0}.information{margin-top:17px;padding:16px 22px;color:#8e99a8;font-size:12px}.information summary{cursor:pointer;min-height:23px;display:flex;align-items:center;justify-content:space-between;list-style:none}.information summary::-webkit-details-marker{display:none}.information summary:after{content:"＋";font-size:17px}.information[open] summary:after{content:"−"}.information p{overflow-wrap:anywhere;line-height:1.9;margin:13px 0}.log{padding:0;list-style:none;max-height:170px;overflow:auto;font-size:11px}.log li{padding:5px 0;border-bottom:1px solid var(--line)}.log time{margin-right:10px;color:#abb3bf}.diagnostic{width:100%;height:150px;border:1px solid #d9e1ea;border-radius:8px;background:#fafbfd;padding:10px;font-size:11px;resize:vertical}.footer{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#a6b0bc;padding-top:18px}.pulse{animation:update .45s ease-out}@keyframes update{50%{box-shadow:0 0 0 2px #8fb4ff55}}
+@media(max-width:760px){.shell{padding:23px 14px 20px}.top{margin-bottom:20px}.top h1{font-size:19px;letter-spacing:-.5px}.badge{font-size:12px;padding:8px 12px;gap:6px}.badge:before{width:7px;height:7px}.toolbar{font-size:10px;gap:6px;margin-top:-8px;margin-bottom:14px}.toolbar-actions{gap:6px}.toolbar .btn{min-height:35px;padding:6px 9px;font-size:10px}.metrics{gap:12px}.metric{padding:17px 16px;min-height:155px;border-radius:14px}.metric-label{font-size:12px;gap:4px}.value{font-size:clamp(34px,9vw,48px);letter-spacing:-1.4px}.reading{gap:4px;margin:8px 0}.unit{font-size:14px}.humidity .unit{font-size:12px}.metric-footer{font-size:10px;line-height:1.9}.summary{margin:12px 0 16px;padding:15px 16px;font-size:11px;gap:8px;border-radius:14px}.summary-main{gap:6px 15px}.channels{margin-left:auto}.data-card{padding:20px 16px;border-radius:16px}.data-heading{margin-bottom:15px}.data-heading h2{font-size:17px}.data-heading small{font-size:9px}.view-tab{min-height:39px;font-size:13px;padding:7px 13px}.range-tabs{gap:6px;margin-bottom:16px}.range-tab{padding:6px 10px;min-height:36px;font-size:12px}.chart-grid{grid-template-columns:1fr;gap:18px}.plot h3{font-size:12px}.plot svg{min-height:175px}.details-table{font-size:12px}.details-table th,.details-table td{padding:10px 8px}.details-table th{font-size:10px}.details-table small{display:block;font-size:9px;margin:0;color:#9fa9b6;line-height:1.3}.pagination{font-size:10px}.page-actions{gap:5px}.page-actions .btn{font-size:10px;padding:6px 8px}.statistics{grid-template-columns:1fr;gap:7px;padding-top:12px}.stat-line,.record-note{font-size:11px}.storage-note,.refresh-note{font-size:10px}.record-note{margin:12px 0}.information{padding:14px 16px;font-size:11px;border-radius:14px}.footer{font-size:9px;flex-wrap:wrap}}
+@media(max-width:350px){.shell{padding-left:11px;padding-right:11px}.top h1{font-size:16px}.badge{font-size:10px;padding:7px 10px}.metric{padding:15px 12px}.value{font-size:31px}.unit{font-size:12px}.humidity .unit{font-size:10px}.metric-footer{font-size:9px}.data-card{padding:17px 12px}.range-tab{font-size:11px;padding:6px 8px}.summary-main{gap:4px 12px}.summary{padding:13px;font-size:10px}}
+@supports(padding:max(0px)){.shell{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));padding-bottom:max(20px,env(safe-area-inset-bottom))}}@media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <header class="top"><div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9c3-6 6 6 9 0s6 6 9 0M3 15c3-6 6 6 9 0s6 6 9 0"/></svg></div><div><strong>环境观测站</strong><small>ENVIRONMENT MONITOR</small></div></div><div class="top-right"><time class="clock" id="clock"></time><span class="badge" id="connectionBadge" >尚未连接</span></div></header>
-  <section class="intro"><div><div class="eyebrow">YOUR ENVIRONMENT / 环境概览</div><h1>感知空间的每一刻。<span class="badge warn hidden" id="demoBadge">模拟数据</span></h1><p class="sub">温湿度实时监测<span class="sub-sep">/</span>每 10 秒自动更新</p></div><div class="actions"><button class="btn" id="settingsBtn" aria-expanded="true" aria-controls="settings">设备信息</button><button class="btn" id="demoBtn">演示数据</button><button class="btn" id="exportBtn" disabled>导出数据 ↗</button></div></section>
-  <div id="notice" class="notice" role="status" aria-live="polite">正在载入环境数据…</div>
-  <div class="layout" id="workspaceLayout"><main class="main">
-    <div class="metric-grid">
-      <section class="card metric" id="temperatureCard"><div class="metric-top"><div class="metric-label"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14.5V5a3 3 0 0 1 6 0v9.5a5 5 0 1 1-6 0Z"/><path d="M12 8v9M17 6h2M17 10h2"/><circle cx="12" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg></span><span>环境温度<small>TEMPERATURE</small></span></div><span class="sensor-chip">AHT20</span></div><div class="metric-art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14.5V5a3 3 0 0 1 6 0v9.5a5 5 0 1 1-6 0Z"/><path d="M12 8v9M17 6h2M17 10h2"/><circle cx="12" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg></div><div class="reading"><span class="value" id="temperatureValue">--</span><span class="unit">°C</span></div><div class="metric-footer"><span id="temperatureTime">尚无温度数据</span><span id="temperatureAge">等待上报</span></div></section>
-      <section class="card metric humidity" id="humidityCard"><div class="metric-top"><div class="metric-label"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/><path d="M8.5 15.5a3.5 3.5 0 0 0 3.5 3"/></svg></span><span>相对湿度<small>HUMIDITY</small></span></div><span class="sensor-chip">RH</span></div><div class="metric-art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/><path d="M8.5 15.5a3.5 3.5 0 0 0 3.5 3"/></svg></div><div class="reading"><span class="value" id="humidityValue">--</span><span class="unit">% RH</span></div><div class="metric-footer"><span id="humidityTime">尚无湿度数据</span><span id="humidityAge">等待上报</span></div></section>
+  <header class="top"><h1>🌡️ 温湿度监测看板</h1><span class="badge" id="connectionBadge" role="status">正在连接</span></header>
+  <div class="toolbar"><span>每 10 秒读取一次</span><div class="toolbar-actions"><button class="btn" id="infoBtn">设备信息</button><button class="btn" id="exportBtn" disabled>导出 CSV</button></div></div>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <main>
+    <div class="metrics">
+      <section class="card metric" id="temperatureCard"><div class="metric-label">🌡️ 当前温度</div><div class="reading"><span class="value" id="temperatureValue">--</span><span class="unit">°C</span></div><div class="metric-footer"><span id="temperatureAge">等待上报</span><time id="temperatureTime">尚无温度数据</time></div></section>
+      <section class="card metric humidity" id="humidityCard"><div class="metric-label">💧 当前湿度</div><div class="reading"><span class="value" id="humidityValue">--</span><span class="unit">%RH</span></div><div class="metric-footer"><span id="humidityAge">等待上报</span><time id="humidityTime">尚无湿度数据</time></div></section>
     </div>
-    <section class="card strip" aria-label="上报状态"><div><small>数据状态</small><strong id="freshness">等待数据</strong></div><div><small>下次预计更新</small><strong id="countdown">-- <span class="hint">以实际接收为准</span></strong></div><div><small>本次采集</small><strong><span id="messageCount">0</span><span class="hint">条记录</span></strong></div></section>
-    <section class="card chart-card"><div class="section-head"><div><h2>环境趋势</h2><small>记录每一次细微变化</small></div><div class="chart-controls"><span class="history-tag">最近 60 分钟</span><div class="legend"><span><i></i>温度</span><span><i class="blue"></i>湿度</span></div></div></div>
-      <div class="chart-tabs" role="group" aria-label="切换趋势图"><button class="chart-tab" data-chart="temperature" aria-pressed="true" aria-controls="temperaturePlot">温度 °C</button><button class="chart-tab" data-chart="humidity" aria-pressed="false" aria-controls="humidityPlot">湿度 % RH</button></div>
-      <div class="chart-grid">
-      <div class="chart-block selected" id="temperaturePlot"><div class="chart-title">温度 / °C</div><svg id="temperatureChart" viewBox="0 0 900 190" role="img" aria-label="温度趋势图"></svg><div class="chart-empty" id="temperatureEmpty">收到温度数据后显示趋势</div></div>
-      <div class="chart-block" id="humidityPlot"><div class="chart-title blue">相对湿度 / % RH</div><svg id="humidityChart" viewBox="0 0 900 190" role="img" aria-label="湿度趋势图"></svg><div class="chart-empty" id="humidityEmpty">收到湿度数据后显示趋势</div></div>
-      </div><p class="chart-foot">保留本次打开期间的记录。超过 30 秒无新数据会显示断点，关闭页面后记录清空。</p>
+    <section class="card summary" aria-label="采集概览"><div class="summary-main"><span>数据点 <strong id="messageCount">0</strong> 条</span><span>最新：<time id="latestReport">--</time></span></div><span class="channels" id="channelStatus">等待传感器上报</span></section>
+    <section class="card data-card">
+      <div class="data-heading"><h2>数据明细</h2><small>北京时间 · 最新数据自动同步</small></div>
+      <div class="view-tabs" role="group" aria-label="显示方式"><button class="view-tab" data-view="charts" aria-pressed="true" aria-controls="chartsPanel">曲线图</button><button class="view-tab" data-view="table" aria-pressed="false" aria-controls="tablePanel">明细表</button></div>
+      <div class="range-tabs" role="group" aria-label="时间范围"><button class="range-tab" data-range="1" aria-pressed="true">近 1 小时</button><button class="range-tab" data-range="6" aria-pressed="false">近 6 小时</button><button class="range-tab" data-range="24" aria-pressed="false">近 24 小时</button><button class="range-tab" data-range="168" aria-pressed="false">近 7 天</button><button class="range-tab" data-range="all" aria-pressed="false">全部</button></div>
+      <div id="chartsPanel" class="chart-grid"><section class="plot"><h3>🌡️ 温度 / °C</h3><svg id="temperatureChart" role="img" aria-label="温度随时间变化的曲线"></svg><div class="chart-empty" id="temperatureEmpty">等待温度上报后显示曲线</div></section><section class="plot hum"><h3>💧 湿度 / %RH</h3><svg id="humidityChart" role="img" aria-label="湿度随时间变化的曲线"></svg><div class="chart-empty" id="humidityEmpty">等待湿度上报后显示曲线</div></section></div>
+      <div id="tablePanel" hidden><div class="table-scroll" tabindex="0" aria-label="温湿度明细表，可上下滚动"><table class="details-table"><thead><tr><th scope="col">时间</th><th scope="col">温度 (°C)</th><th scope="col">湿度 (%RH)</th></tr></thead><tbody id="detailsBody"><tr><td colspan="3" class="empty-row">所选范围暂无记录</td></tr></tbody></table></div><div class="pagination"><span>最新记录在前 · 每页 50 条</span><div class="page-actions"><button class="btn" id="prevPage" disabled>上一页</button><span id="pageLabel">1 / 1</span><button class="btn" id="nextPage" disabled>下一页</button></div></div></div>
+      <p class="record-note" id="recordNote">所选时间范围共 0 条记录</p>
+      <div class="statistics"><div class="stat-line"><span class="label-temp">🌡️ 温度：</span><strong id="temperatureStats">均 -- / 低 -- / 高 -- °C</strong></div><div class="stat-line"><span class="label-hum">💧 湿度：</span><strong id="humidityStats">均 -- / 低 -- / 高 -- %RH</strong></div></div>
+      <p class="storage-note" id="storageNote">保留此浏览器已采集的最近 7 天数据。网页关闭期间不采集，未采集的时段无记录。</p><p class="refresh-note">每 10 秒读取 · 上次成功读取 <time id="lastRefresh">--</time></p>
     </section>
-    <details class="card log-card"><summary>连接与诊断 <small>查看运行详情</small></summary><button class="btn" id="diagnosticBtn" style="margin-top:14px">复制连接诊断</button><textarea id="diagnosticText" class="raw hidden" readonly aria-label="连接诊断（不含密钥）" style="width:100%;height:180px"></textarea><ul id="log" class="log"></ul><details class="details"><summary>最近一条消息</summary><pre class="raw" id="raw">尚未收到消息。</pre></details></details>
-  </main><aside class="card side" id="settings">
-    <h2>连接你的设备</h2><p class="sub" id="settingsIntro">在阿里云创建专用查看端 <code>web_viewer</code>，然后填入以下信息。</p>
-    <form id="configForm" autocomplete="off">
-      <label class="field"><span>ProductKey</span><input id="productKey" value="a1uz46TeWMm" required maxlength="32" spellcheck="false"></label>
-      <label class="field"><span>查看端 DeviceName</span><input id="viewerName" value="web_viewer" required maxlength="32" spellcheck="false"><small>传感器名称是 temperature_humidity，请使用不同的查看端设备。</small></label>
-      <label class="field"><span>查看端 DeviceSecret</span><input id="viewerSecret" type="password" required maxlength="256" autocomplete="new-password" placeholder="填写 web_viewer 的密钥" spellcheck="false"><small>用于本机签名。仅勾选下方自动连接时，才在此浏览器保存查看端密钥。</small></label>
-      <label class="field"><span>实例类型</span><select id="instanceType"><option value="new">新版公共实例 / 企业版实例</option><option value="legacy">旧版公共实例（没有实例 ID）</option></select></label>
-      <label class="field" id="instanceField"><span>实例 ID</span><input id="instanceId" placeholder="如 iot-xxxxxxxx" spellcheck="false"><small>在“实例概览”查看；也可以直接填写下方的 MQTT 接入地址。</small></label>
-      <label class="field"><span>MQTT 接入地址 <span style="display:inline;color:#87949e">（推荐从控制台复制）</span></span><input id="mqttHost" placeholder="如 iot-xxx.mqtt.iothub.aliyuncs.com" spellcheck="false"><small>设备信息 → MQTT 连接参数 → mqttHostUrl。使用 WSS / 443；未填写时按实例类型生成。</small></label>
-      <details class="details"><summary>属性标识符与高级设置</summary>
-        <label class="field"><span>温度标识符（可选）</span><input id="temperatureKey" placeholder="如 Temperature / AHT20Temperature" maxlength="80" spellcheck="false"></label>
-        <label class="field"><span>湿度标识符（可选）</span><input id="humidityKey" placeholder="如 RelativeHumidity / Humidity" maxlength="80" spellcheck="false"></label>
-        <p>请填写物模型中的“标识符”，不是显示名称。留空时识别常用温湿度字段；无法识别时，日志会列出收到的字段名。</p>
-        <label class="field"><span>旧版公共实例地域</span><input id="region" value="cn-shanghai" spellcheck="false"></label>
-        <label class="field"><span>订阅 Topic（自动生成）</span><input id="topic" readonly></label>
-      </details>
-      <label class="check"><input type="checkbox" id="remember" checked>记住非敏感配置（不保存密钥）</label>
-      <label class="check"><input type="checkbox" id="autoConnect">记住查看端密钥，打开网页自动连接</label>
-      <p class="privacy">自动连接适用于自己的电脑，连接信息保存在此浏览器。<button type="button" class="btn link" id="forgetBtn" style="padding:2px 0;font-size:11px">清除已保存连接</button></p>
-      <div class="connect-row"><button class="btn primary" id="connectBtn" type="submit">连接实时数据</button><button class="btn" id="disconnectBtn" type="button" disabled>断开</button></div>
-    </form>
-    <p class="privacy">同一查看端请只开一个页面；多设备同时查看时，为每个查看端创建独立身份和转发规则。</p>
-    <div class="divider"></div>
-    <div class="source-label"><span>传感器</span><strong>temperature_humidity</strong></div><div class="source-label" style="margin-top:12px"><span>上报周期</span><strong>10 秒</strong></div>
-    <details class="details"><summary>首次使用：阿里云需要配置什么？</summary><ol><li>在同一产品下创建设备 <code>web_viewer</code>。</li><li>在产品的“Topic 类列表 → 自定义 Topic”定义 <code>/产品Key/${deviceName}/user/get</code>，权限选择“订阅”。</li><li>在“消息转发 → 云产品流转”中，选择传感器 <code>temperature_humidity</code> 的“物模型属性上报”作为数据源。</li><li>将完整消息转发到下方目标 Topic，发布并启动规则。</li></ol><pre id="targetTopic"></pre><p>新版解析器示例（把 1000 换成你创建的“数据目的 ID”）：</p><pre id="ruleExample"></pre><p>旧版 SQL 规则选择 <code>SELECT *</code>，源 Topic 从控制台选择“物模型属性上报”，动作选“发布到另一个 Topic”。不要给规则源 Topic 随意添加 <code>/sys</code>。</p><a href="https://help.aliyun.com/zh/iot/user-guide/forward-data-to-another-topic" target="_blank" rel="noopener noreferrer">阿里云官方配置说明 ↗</a></details>
-  </aside></div>
-  <footer class="bottom"><span>环境观测站 · 实时记录，安心掌握</span><span>以最近一次传感器上报为准</span></footer>
+  </main>
+  <details class="card information" id="information"><summary>设备信息与连接日志</summary><p>传感器：<strong id="deviceName"></strong><br>数据状态：<span id="freshness">等待数据</span> · 下次读取：<span id="countdown">--</span><br>本次接收：<span id="sessionCount">0</span> 条新记录。历史保存在当前浏览器，其他手机和浏览器分别采集；清理浏览器数据会删除本地历史。</p><button class="btn" id="diagnosticBtn">复制连接诊断</button><textarea id="diagnosticText" class="diagnostic" readonly aria-label="不含密钥的连接诊断" hidden></textarea><ul class="log" id="log"></ul></details>
+  <footer class="footer"><span>温湿度监测看板 · 正式版</span><span>以传感器实际属性上报时间为准</span></footer>
 </div>
-<script id="connectionPreset" type="application/json">{"transport":"https","endpoint":"https://iot-temre-https-guytnbgdhk.cn-shanghai.fcapp.run","productKey":"a1uz46TeWMm","temperatureKey":"AHT20_Temperature","humidityKey":"RelativeHumidity"}</script>
+<script id="connectionPreset" type="application/json">{"transport":"https","endpoint":"https://iot-temre-https-guytnbgdhk.cn-shanghai.fcapp.run","productKey":"a1uz46TeWMm","temperatureKey":"AHT20_Temperature","humidityKey":"RelativeHumidity","deviceName":"temperature_humidity"}</script>
 <script>
-'use strict';
-// MQTT 3.1.1 receive-only client: CONNECT, SUBSCRIBE, PUBLISH QoS 0/1, PUBACK, PING, DISCONNECT.
-// No cloud account AccessKey and no sensor secret are embedded in this document.
-const SensorCore = (() => {
-  const encoder = new TextEncoder(), decoder = new TextDecoder('utf-8', {fatal:true});
-  function concat(...parts) { const size=parts.reduce((s,p)=>s+p.length,0); const out=new Uint8Array(size); let at=0; for(const p of parts){out.set(p,at);at+=p.length;} return out; }
-  function word(n){return Uint8Array.of((n>>>8)&255,n&255);}
-  function utf8(s){const b=encoder.encode(s);if(b.length>65535)throw Error('MQTT 字符串过长');return concat(word(b.length),b);}
-  function packet(header,body=new Uint8Array()){let size=body.length,bytes=[];do{let b=size%128;size=Math.floor(size/128);if(size)b|=128;bytes.push(b);}while(size);return concat(Uint8Array.of(header,...bytes),body);}
-  function connectPacket(clientId,username,password){return packet(0x10,concat(utf8('MQTT'),Uint8Array.of(4,0xc2),word(300),utf8(clientId),utf8(username),utf8(password)));}
-  function subscribePacket(topic,id=1){return packet(0x82,concat(word(id),utf8(topic),Uint8Array.of(1)));}
-  class Reader {
-    constructor(){this.buffer=new Uint8Array();}
-    push(chunk){
-      this.buffer=concat(this.buffer,chunk);const packets=[];
-      while(this.buffer.length>=2){let length=0,multiplier=1,index=1,b=0;
-        do{if(index>=this.buffer.length)return packets;b=this.buffer[index++];length+=(b&127)*multiplier;multiplier*=128;if(index>5||(index===5&&(b&128)))throw Error('MQTT 长度格式错误');}while(b&128);
-        if(length>1024*1024)throw Error('单条消息超过 1 MB，已断开');
-        if(this.buffer.length<index+length)return packets;
-        packets.push({header:this.buffer[0],body:this.buffer.slice(index,index+length)});
-        this.buffer=this.buffer.slice(index+length);
-      }return packets;
-    }
-  }
-  function publishMessage(p){
-    const b=p.body,qos=(p.header>>>1)&3;
-    if(qos>1)throw Error('不支持收到的 QoS 2/3 消息');
-    if(b.length<2)throw Error('PUBLISH 报文不完整');
-    const size=(b[0]<<8)|b[1];let offset=2+size;
-    if(!size||offset+(qos?2:0)>b.length)throw Error('PUBLISH Topic 长度错误');
-    const topic=decoder.decode(b.slice(2,offset));let id=null;
-    if(qos){id=(b[offset]<<8)|b[offset+1];offset+=2;if(!id)throw Error('MQTT 消息 ID 无效');}
-    return {topic,id,qos,retained:!!(p.header&1),text:decoder.decode(b.slice(offset))};
-  }
-  function normalizeTime(value,now){
-    if(value===undefined||value===null||value==='')return now;
-    let time=typeof value==='number'?value:Number(value);
-    if(!Number.isFinite(time))time=Date.parse(value);
-    if(time>0&&time<1e11)time*=1000;
-    return Number.isFinite(time)&&time>0&&time<=8640000000000000?time:now;
-  }
-  const aliases={temperature:['temperature','temp','aht20temperature','aht20temp','aht20温度','温度'],humidity:['relativehumidity','humidity','hum','humi','aht20humidity','相对湿度','湿度']};
-  function normalizeKey(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]/g,'');}
-  function parseReadings(data,keys={},now=Date.now()){
-    if(!data||typeof data!=='object'||Array.isArray(data))throw Error('消息内容应为 JSON 对象');
-    let root=data;
-    if(data.data&&typeof data.data==='object'&&!data.items&&!data.params)root=data.data;
-    const fields=root.items||root.params||root;
-    if(!fields||typeof fields!=='object'||Array.isArray(fields))throw Error('属性内容应为 JSON 对象');
-    const names=Object.keys(fields),result={temperature:null,humidity:null,fields:names};
-    for(const metric of ['temperature','humidity']){
-      const configured=(keys[metric]||'').trim();
-      let name=configured?(names.includes(configured)?configured:names.find(n=>n.toLowerCase()===configured.toLowerCase())):names.find(n=>aliases[metric].includes(normalizeKey(n)));
-      if(!name)continue;
-      const item=fields[name],object=item!==null&&typeof item==='object'&&!Array.isArray(item),raw=object?item.value:item;
-      if((typeof raw!=='number'&&typeof raw!=='string')||String(raw).trim()==='')continue;
-      const value=Number(raw);if(!Number.isFinite(value))continue;
-      if(metric==='humidity'&&(value<0||value>100))continue;
-      if(metric==='temperature'&&(value < -273.15 || value>1000))continue;
-      result[metric]={value,time:normalizeTime((object?item.time:undefined)??root.time??root.timestamp??root.gmtCreate,now),name};
-    }
-    return result;
-  }
-  function broker(config){
-    let host=config.host.trim();
-    if(!host){
-      if(config.instanceType==='legacy'){
-        if(!/^[a-z0-9-]+$/.test(config.region))throw Error('地域格式错误，例如 cn-shanghai');
-        host=config.productKey+'.iot-as-mqtt.'+config.region+'.aliyuncs.com';
-      }else{if(!/^iot-[a-zA-Z0-9-]+$/.test(config.instanceId))throw Error('请填写实例 ID 或从控制台复制 MQTT 接入地址');host=config.instanceId+'.mqtt.iothub.aliyuncs.com';}
-    }
-    const url=new URL(host.includes('://')?host:'wss://'+host);
-    if(url.protocol!=='wss:'||!url.hostname.endsWith('.aliyuncs.com')||url.username||url.password||url.search||url.hash)throw Error('请使用阿里云官方 MQTT 接入域名和 wss:// 地址');
-    url.port='443';return url.href;
-  }
-  async function auth(config,secret,baseId,timestamp){
-    if(!globalThis.crypto?.subtle)throw Error('浏览器不支持本地安全签名，请使用新版 Chrome 或 Edge 打开文件，或通过 HTTPS 访问。');
-    const content='clientId'+baseId+'deviceName'+config.viewerName+'productKey'+config.productKey+'timestamp'+timestamp;
-    const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
-    const signature=new Uint8Array(await crypto.subtle.sign('HMAC',key,encoder.encode(content)));
-    return {clientId:baseId+'|securemode=2,signmethod=hmacsha256,timestamp='+timestamp+'|',username:config.viewerName+'&'+config.productKey,password:Array.from(signature,b=>b.toString(16).padStart(2,'0')).join('')};
-  }
-  return {concat,word,utf8,packet,connectPacket,subscribePacket,Reader,publishMessage,parseReadings,normalizeTime,broker,auth};
-})();
-globalThis.SensorCore=SensorCore;
-
-(() => {
-  const $=id=>document.getElementById(id), SENSOR='temperature_humidity', PERIOD=10000, STALE=30000, MAX_POINTS=360;
-  const configNames=['productKey','viewerName','instanceType','instanceId','mqttHost','temperatureKey','humidityKey','region'];
-  const configStorage='environment-monitor-config-v1',loginStorage='environment-monitor-login-v1';
-  let config=null,client=null,secretInMemory='',generation=0,reconnectTimer=null,pingTimer=null,handshakeTimer=null;
-  let active=false,phase='idle',attempt=0,pingOutstanding=0,subscribedAt=0,sessionStartedAt=0;
-  let pollTimer=null,pollController=null,readToken='';
-  let demoTimer=null,demoStartedAt=0,mode='real',records=[],latest={temperature:null,humidity:null},messageCount=0,lastSampleAt=0,lastRaw=null;
-  const hhmmss=time=>new Date(time).toLocaleTimeString('zh-CN',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  function log(message){const li=document.createElement('li'),time=document.createElement('time');time.textContent=hhmmss(Date.now());li.append(time,document.createTextNode(message));$('log').prepend(li);while($('log').children.length>40)$('log').lastChild.remove();}
-  $('diagnosticBtn').addEventListener('click',async()=>{
-    const report={version:'2026-10-26.4',time:new Date().toISOString(),browser:navigator.userAgent,networkOnline:navigator.onLine,pageProtocol:location.protocol,connection:$('connectionBadge').textContent,phase,transport:config?.transport||'mqtt',host:config?.transport==='https'?new URL(config.endpoint).hostname:$('mqttHost').value.trim(),messages:messageCount,logs:Array.from($('log').children).map(li=>li.textContent)};
-    const box=$('diagnosticText');box.value=JSON.stringify(report,null,2);box.classList.remove('hidden');box.focus();box.select();
-    try{await navigator.clipboard.writeText(box.value);$('diagnosticBtn').textContent='已复制诊断（不含密钥）';}catch{$('diagnosticBtn').textContent='请复制下方已选中的诊断文字';}
-  });
-  function notice(text,kind=''){const el=$('notice');el.textContent=text;el.className='notice'+(kind?' '+kind:'');}
-  function badge(text,kind=''){const el=$('connectionBadge');el.textContent=text;el.className='badge'+(kind?' '+kind:'');}
-  function topic(){return '/'+$('productKey').value.trim()+'/'+$('viewerName').value.trim()+'/user/get';}
-  function updateTopics(){const value=topic();$('topic').value=value;$('targetTopic').textContent=value;$('ruleExample').textContent='var data = payload("json");\nwriteIotTopic(1000, "'+value+'", data);';$('instanceField').classList.toggle('hidden',$('instanceType').value==='legacy');}
-  function readConfig(){return {productKey:$('productKey').value.trim(),viewerName:$('viewerName').value.trim(),instanceType:$('instanceType').value,instanceId:$('instanceId').value.trim(),host:$('mqttHost').value.trim(),region:$('region').value.trim(),temperatureKey:$('temperatureKey').value.trim(),humidityKey:$('humidityKey').value.trim(),topic:topic()};}
-  function showSettings(visible){$('settings').classList.toggle('hidden',!visible);$('workspaceLayout').style.gridTemplateColumns=visible?'':'minmax(0,1fr)';$('settingsBtn').setAttribute('aria-expanded',String(visible));$('settingsBtn').textContent=visible?'收起信息':'设备信息';renderCharts();}
-  $('settingsBtn').addEventListener('click',()=>showSettings($('settings').classList.contains('hidden')));
-  function persist(){try{if($('remember').checked){const saved={};for(const name of configNames)saved[name]=$(name).value;localStorage.setItem(configStorage,JSON.stringify(saved));}else localStorage.removeItem(configStorage);}catch{log('浏览器未允许保存配置；仍可正常连接。');}}
-  function persistLogin(){try{if($('autoConnect').checked){const saved={};for(const name of configNames)saved[name]=$(name).value;saved.secret=secretInMemory;localStorage.setItem(loginStorage,JSON.stringify(saved));}else localStorage.removeItem(loginStorage);}catch{log('浏览器未允许保存自动连接信息，下次打开仍需输入密钥。');}}
-  function startAutomaticConnection(){
-    try{
-      const preset=JSON.parse($('connectionPreset').textContent||'null'),saved=preset||JSON.parse(localStorage.getItem(loginStorage)||'null');
-      if(!saved)return false;
-      if(saved.transport==='https'){
-        saved.readToken=new URLSearchParams(location.hash.slice(1)).get('token')||'';
-        if(!saved.readToken){stopDemo();shutdown();resetData();$('settings').querySelector('h2').textContent='私人看板';$('settingsIntro').textContent='请使用包含访问凭据的完整个人链接打开此看板。';$('settings').querySelectorAll('form,.privacy,.details').forEach(el=>el.classList.add('hidden'));showSettings(true);badge('等待访问链接');notice('请使用完整的个人看板链接打开。','warn');return true;}
-        const endpoint=new URL(saved.endpoint);
-        if(endpoint.protocol!=='https:'||!endpoint.hostname.endsWith('.fcapp.run')||endpoint.username||endpoint.password||endpoint.search||endpoint.hash)throw Error('HTTPS 数据接口地址不正确');
-        if(typeof saved.readToken!=='string'||saved.readToken.length<32)throw Error('只读访问凭据不完整');
-        stopDemo();shutdown();mode='real';config={transport:'https',endpoint:endpoint.href,productKey:saved.productKey,temperatureKey:saved.temperatureKey,humidityKey:saved.humidityKey};readToken=saved.readToken;resetData();active=true;lockForm(true);
-        $('settings').querySelector('h2').textContent='数据连接';$('settingsIntro').textContent='已配置 HTTPS 实时读取，无需填写参数。支持多个浏览器和设备同时查看。';
-        $('settings').querySelectorAll('form,.privacy,.details').forEach(el=>el.classList.add('hidden'));showSettings(false);
-        log('已载入 HTTPS 个人看板，正在读取传感器数据。');pollHttps(generation);return true;
-      }
-      if(typeof saved.secret!=='string'||!saved.secret||typeof saved.viewerName!=='string'||typeof saved.productKey!=='string')throw Error('自动连接信息不完整');
-      for(const name of configNames)if(typeof saved[name]==='string')$(name).value=saved[name];
-      $('viewerSecret').value=saved.secret;$('autoConnect').checked=!preset;$('remember').checked=!preset;updateTopics();
-      if(preset){$('settingsIntro').textContent='已配置专用查看端和转发规则，打开网页即可自动连接。';showSettings(false);}
-      log(preset?'已载入个人版连接，正在自动连接。':'已载入此浏览器保存的连接。');$('configForm').requestSubmit();return true;
-    }catch(error){notice('无法自动连接：'+error.message+'。请检查连接设置。','warn');return false;}
-  }
-  try{const saved=JSON.parse(localStorage.getItem(configStorage)||'null');if(saved&&typeof saved==='object')for(const name of configNames)if(typeof saved[name]==='string')$(name).value=saved[name];}catch{}
-  for(const name of configNames)$(name).addEventListener('input',updateTopics);
-  updateTopics();
-  window.addEventListener('hashchange',()=>startAutomaticConnection());
-  function lockForm(locked){for(const name of [...configNames,'viewerSecret','remember','autoConnect'])$(name).disabled=locked;$('connectBtn').disabled=locked;$('disconnectBtn').disabled=!locked;}
-  function clearConnectionTimers(){clearTimeout(handshakeTimer);clearInterval(pingTimer);handshakeTimer=null;pingTimer=null;pingOutstanding=0;}
-  function resetData(){records=[];latest={temperature:null,humidity:null};messageCount=0;lastSampleAt=0;lastRaw=null;sessionStartedAt=Date.now();$('messageCount').textContent='0';$('raw').textContent='尚未收到消息。';$('exportBtn').disabled=true;renderCharts();tick();}
-  function shutdown(){
-    active=false;generation++;clearTimeout(reconnectTimer);reconnectTimer=null;clearConnectionTimers();
-    clearTimeout(pollTimer);pollTimer=null;if(pollController){pollController.abort();pollController=null;}readToken='';
-    if(client){try{if(client.readyState===WebSocket.OPEN)client.send(Uint8Array.of(0xe0,0));client.close(1000);}catch{}client=null;}
-    secretInMemory='';phase='idle';subscribedAt=0;lockForm(false);
-  }
-  function stopDemo(){clearInterval(demoTimer);demoTimer=null;demoStartedAt=0;$('demoBtn').textContent='演示数据';$('demoBadge').classList.add('hidden');}
-  function fatal(message){shutdown();badge('连接失败','bad');notice(message,'bad');log(message);tick();}
-  async function pollHttps(myGeneration){
-    if(!active||myGeneration!==generation||config?.transport!=='https'||pollController)return;
-    clearTimeout(pollTimer);pollTimer=null;
-    if(!subscribedAt){phase='connecting';badge('正在连接','warn');notice('正在读取最新环境数据…');}
-    const controller=new AbortController();pollController=controller;
-    const deadline=setTimeout(()=>controller.abort(),8000);
-    try{
-      const response=await fetch(config.endpoint,{method:'GET',headers:{Authorization:'Bearer '+readToken},mode:'cors',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer',signal:controller.signal});
-      if(!active||myGeneration!==generation)return;
-      if(response.status===401||response.status===403){fatal('只读访问凭据无效，请使用更新后的个人看板文件。');return;}
-      if(!response.ok)throw Error('数据接口暂不可用（HTTP '+response.status+'）');
-      const text=await response.text();if(!active||myGeneration!==generation)return;
-      if(!subscribedAt)log('HTTPS 已连接，每 10 秒自动更新。');
-      phase='subscribed';if(!subscribedAt)subscribedAt=Date.now();badge('网页已连接','good');handleData(text);tick();
-    }catch(error){
-      if(!active||myGeneration!==generation)return;
-      phase='reconnecting';badge('等待重连','warn');notice('暂时无法读取数据，10 秒后自动重试。已有数据会保留。','warn');log(error.name==='AbortError'?'HTTPS 读取超时。':error instanceof TypeError?'HTTPS 请求失败，请检查网络或代理。':error.message);
-    }finally{
-      clearTimeout(deadline);if(pollController===controller)pollController=null;
-      if(active&&myGeneration===generation)pollTimer=setTimeout(()=>pollHttps(myGeneration),PERIOD);
-    }
-  }
-  function keys(){return mode==='demo'?{}:{temperature:config?.temperatureKey||$('temperatureKey').value.trim(),humidity:config?.humidityKey||$('humidityKey').value.trim()};}
-  function handleData(text,retained=false){
-    try{
-      if(text.length>262144)throw Error('消息体超过 256 KB');
-      const data=JSON.parse(text),now=Date.now();lastRaw=data;$('raw').textContent=JSON.stringify(data,null,2).slice(0,16000);
-      if((data.deviceName&&data.deviceName!==SENSOR)||(data.productKey&&data.productKey!==config?.productKey&&mode!=='demo'))throw Error('忽略不属于目标传感器的消息，请检查转发规则');
-      const parsed=SensorCore.parseReadings(data,keys(),now);
-      if(!parsed.temperature&&!parsed.humidity)throw Error('未识别到温湿度。收到字段：'+parsed.fields.slice(0,25).join(', ')+'。请在高级设置填写实际物模型标识符后重新连接。');
-      let sample={receivedAt:now,temperature:null,humidity:null};
-      for(const metric of ['temperature','humidity']){
-        const value=parsed[metric];if(!value)continue;
-        if(value.time>now+300000){log('忽略未来时间的 '+value.name+' 数据，请校准设备时间。');continue;}
-        if(latest[metric]&&value.time<latest[metric].time){log('忽略时间早于最新值的 '+value.name+' 数据。');continue;}
-        if(latest[metric]&&value.time===latest[metric].time&&value.value===latest[metric].value)continue;
-        sample[metric]={...value,receivedAt:now};latest[metric]=sample[metric];
-      }
-      if(!sample.temperature&&!sample.humidity)return;
-      records.push(sample);if(records.length>MAX_POINTS)records.shift();
-      records=records.filter(r=>r.receivedAt>=now-3600000);messageCount++;lastSampleAt=now;
-      $('messageCount').textContent=String(messageCount);$('exportBtn').disabled=false;
-      if(messageCount===1)log(mode==='demo'?'已载入第一条模拟数据。':'已收到第一条有效上报。');
-      if(retained)log('收到保留消息，数据新鲜度将按消息时间判断。');
-      for(const m of ['temperature','humidity'])if(sample[m]){$(m+'Card').classList.remove('pulse');void $(m+'Card').offsetWidth;$(m+'Card').classList.add('pulse');}
-      renderCharts();tick();
-    }catch(error){log('数据处理：'+error.message);notice(error.message,'warn');}
-  }
-  function scheduleReconnect(myGeneration){
-    if(!active||myGeneration!==generation)return;
-    const delay=Math.min(30000,2000*2**Math.min(attempt++,4));phase='reconnecting';badge('等待重连','warn');notice('网页连接已断开，'+Math.round(delay/1000)+' 秒后重试。已有数据会保留。','warn');log('连接中断，将自动重连。');
-    reconnectTimer=setTimeout(()=>openSocket(myGeneration),delay);
-  }
-  async function openSocket(myGeneration){
-    if(!active||myGeneration!==generation)return;
-    phase='connecting';badge('正在连接','warn');notice('正在连接阿里云并订阅查看端 Topic…');
-    let connection;
-    try{
-      const url=SensorCore.broker(config),baseId=config.productKey+'.'+config.viewerName;
-      if(baseId.length>64)throw Error('查看端连接标识超过 64 个字符');
-      const auth=await SensorCore.auth(config,secretInMemory,baseId,String(Date.now()));
-      if(!active||myGeneration!==generation)return;
-      connection=new WebSocket(url,['mqtt']);connection.binaryType='arraybuffer';client=connection;
-      const reader=new SensorCore.Reader();let accepted=false,subscribed=false;
-      handshakeTimer=setTimeout(()=>{if(client===connection&&!subscribed){log('连接或订阅超时，请检查域名、实例和订阅权限。');connection.close();}},15000);
-      connection.onopen=()=>{if(client===connection){log('WSS 握手成功，正在进行设备认证。');connection.send(SensorCore.connectPacket(auth.clientId,auth.username,auth.password));}};
-      connection.onmessage=event=>{
-        if(client!==connection||myGeneration!==generation)return;
-        try{
-          if(!(event.data instanceof ArrayBuffer))throw Error('收到非二进制 MQTT 消息');
-          for(const p of reader.push(new Uint8Array(event.data))){
-            const type=p.header>>>4;
-            if(type===2){
-              if(p.body.length!==2||p.body[0]!==0)throw Error('MQTT 连接确认格式错误');
-              const code=p.body[1];
-              if(code!==0){fatal(({1:'平台不支持 MQTT 协议版本',2:'连接标识被拒绝',3:'平台服务暂不可用',4:'查看端用户名或密钥错误',5:'查看端未获授权，请检查实例、设备状态和密钥'})[code]||'连接认证失败，返回码 '+code);return;}
-              accepted=true;connection.send(SensorCore.subscribePacket(config.topic));log('认证成功，正在订阅查看端 Topic。');
-            }else if(type===9){
-              if(!accepted||p.body.length!==3||p.body[0]!==0||p.body[1]!==1||![0,1].includes(p.body[2])){fatal('订阅被拒绝。请确认 /user/get 自定义 Topic 已定义，并具有“订阅”权限。');return;}
-              subscribed=true;phase='subscribed';attempt=0;subscribedAt=Date.now();clearTimeout(handshakeTimer);persistLogin();badge('网页已连接','good');log('订阅成功，等待传感器的新上报。');tick();
-              pingTimer=setInterval(()=>{if(client!==connection||connection.readyState!==WebSocket.OPEN)return;if(pingOutstanding){log('平台心跳超时。');connection.close();return;}pingOutstanding=Date.now();connection.send(Uint8Array.of(0xc0,0));},60000);
-            }else if(type===3){
-              if(!accepted)throw Error('认证前收到数据');
-              const message=SensorCore.publishMessage(p);
-              if(message.qos===1)connection.send(SensorCore.packet(0x40,SensorCore.word(message.id)));
-              if(message.topic===config.topic)handleData(message.text,message.retained);
-            }else if(type===13){pingOutstanding=0;}
-            else if(type===14){connection.close();}
-          }
-        }catch(error){log('协议错误：'+error.message);connection.close();}
-      };
-      connection.onerror=()=>{if(client===connection)log('WSS 连接错误。浏览器未提供具体原因，请用“复制连接诊断”记录状态。');};
-      connection.onclose=event=>{
-        if(client!==connection||myGeneration!==generation)return;
-        log('连接关闭：'+(subscribed?'已订阅':accepted?'已认证，未订阅':'尚未完成设备认证')+'；关闭码 '+event.code+'。');
-        if(event.code===1015){fatal('MQTT 接入点 TLS 握手失败（1015）。请使用新版 HTTPS 个人看板。');return;}
-        client=null;clearConnectionTimers();subscribedAt=0;scheduleReconnect(myGeneration);tick();
-      };
-    }catch(error){if(connection)try{connection.close();}catch{}if(myGeneration===generation)fatal(error.message);}
-  }
-  $('configForm').addEventListener('submit',event=>{
-    event.preventDefault();
-    try{
-      const next=readConfig(),secret=$('viewerSecret').value.trim();
-      if(!/^[a-zA-Z0-9]+$/.test(next.productKey))throw Error('ProductKey 格式不正确');
-      if(!/^[a-zA-Z0-9_.:@-]+$/.test(next.viewerName))throw Error('查看端设备名称格式不正确');
-      if(next.viewerName===SENSOR)throw Error('请先新建 web_viewer 查看端，不要使用传感器本身的 DeviceName 和密钥。');
-      if(!secret)throw Error('请填写查看端 DeviceSecret');
-      SensorCore.broker(next);stopDemo();shutdown();mode='real';config=next;secretInMemory=secret;persist();resetData();active=true;attempt=0;lockForm(true);openSocket(generation);
-    }catch(error){notice(error.message,'warn');log(error.message);}
-  });
-  $('disconnectBtn').addEventListener('click',()=>{shutdown();badge('已断开');notice('已手动断开。已收到的数据保留在当前页面，可继续导出。');log('已手动断开连接。');tick();});
-  $('forgetBtn').addEventListener('click',()=>{try{localStorage.removeItem(loginStorage);localStorage.removeItem(configStorage);$('autoConnect').checked=false;log('已清除此浏览器保存的连接；个人版文件内置配置不受此按钮影响。');notice('已清除此浏览器保存的连接。当前连接可继续使用。');}catch{notice('浏览器未允许清除存储，请在浏览器设置中清除此页面的数据。','warn');}});
-  $('demoBtn').addEventListener('click',()=>{
-    if(mode==='demo'&&demoTimer){stopDemo();mode='real';config=null;resetData();if(JSON.parse($('connectionPreset').textContent||'null')?.transport==='https'){startAutomaticConnection();return;}badge('尚未连接');notice('演示已结束。填入查看端参数，连接真实数据。');return;}
-    shutdown();stopDemo();mode='demo';config=null;resetData();demoStartedAt=Date.now();$('demoBadge').classList.remove('hidden');$('demoBtn').textContent='返回实时';badge('演示模式','warn');
-    function sample(){const now=Date.now(),elapsed=(now-demoStartedAt)/1000;const payload={deviceName:SENSOR,items:{Temperature:{value:Number((27.8+Math.sin(elapsed/90)*1.3).toFixed(2)),time:now},RelativeHumidity:{value:Number((64+Math.cos(elapsed/105)*3.2).toFixed(2)),time:now}}};const saved=config;config={temperatureKey:'',humidityKey:''};handleData(JSON.stringify(payload));config=saved;}
-    sample();demoTimer=setInterval(sample,PERIOD);tick();
-  });
-  function metricAge(reading,now){return reading?Math.max(0,now-Math.min(reading.time,reading.receivedAt)):Infinity;}
-  function tick(){
-    const now=Date.now();$('clock').textContent=new Date(now).toLocaleString('zh-CN',{hour12:false});
-    const live=mode==='demo'||phase==='subscribed';let allFresh=true,any=false;
-    for(const metric of ['temperature','humidity']){
-      const value=latest[metric],age=metricAge(value,now),stale=!live||age>STALE;any=any||!!value;allFresh=allFresh&&!!value&&!stale;
-      $(metric+'Value').textContent=value?value.value.toFixed(2):'--';
-      $(metric+'Time').textContent=value?'数据时间 '+hhmmss(value.time):'尚无'+(metric==='temperature'?'温度':'湿度')+'数据';
-      $(metric+'Age').textContent=value?(stale?'已过期 · ':'')+Math.floor(age/1000)+' 秒前':'等待上报';
-      $(metric+'Age').classList.toggle('expired',!!value&&stale);$(metric+'Card').classList.toggle('stale',!!value&&stale);
-    }
-    $('freshness').textContent=mode==='demo'?'模拟数据':allFresh?'数据新鲜':!live&&any?'连接已断开':any?'部分数据过期':'等待数据';
-    $('freshness').style.color=mode==='demo'? 'var(--orange)':allFresh?'var(--green)':any?'var(--orange)':'var(--muted)';
-    const anchor=lastSampleAt||(mode==='demo'?demoStartedAt:subscribedAt),remaining=anchor?Math.ceil((PERIOD-(now-anchor))/1000):null;
-    $('countdown').textContent=!live?'--':remaining===null?'等待上报':remaining>0?remaining+' 秒': '等待上报';
-    if(mode==='demo'){notice('演示模式：以下为每 10 秒生成的模拟数据，未连接你的传感器。','warn');return;}
-    if(phase==='subscribed'){
-      badge('网页已连接','good');
-      if(!any&&now-subscribedAt>STALE)notice('网页已连接，但超过 30 秒未收到有效温湿度。请检查云产品流转是否启动、源设备是否正确，以及属性标识符是否匹配。','warn');
-      else if(!any)notice('订阅成功，等待传感器下一次上报（约 10 秒）。首次打开不读取历史数据。');
-      else if(!allFresh)notice('网页连接正常，但部分温湿度超过 30 秒没有新数据。请检查传感器上报、转发规则和数据时间。','warn');
-      else notice('实时同步中 · 最近更新 '+hhmmss(lastSampleAt));
-    }
-  }
-  function renderCharts(){
-    const now=Date.now();for(const metric of ['temperature','humidity']){
-      const points=records.filter(r=>r[metric]).map(r=>({time:r.receivedAt,value:r[metric].value}));
-      $(metric+'Empty').classList.toggle('hidden',points.length>0);
-      const svg=$(metric+'Chart'),color=metric==='temperature'?'#167c68':'#3678b5';
-      const width=Math.max(220,Math.round(svg.clientWidth)||900),compact=width<500;
-      svg.setAttribute('viewBox','0 0 '+width+' 190');
-      const left=compact?40:56,right=width-20,top=18,bottom=150;
-      let min=0,max=100;
-      if(metric==='temperature'){const values=points.map(p=>p.value);min=values.length?Math.floor(Math.min(...values)-1):20;max=values.length?Math.ceil(Math.max(...values)+1):30;if(max-min<4){const middle=(max+min)/2;min=middle-2;max=middle+2;}}
-      const end=points.length?Math.max(points[points.length-1].time,sessionStartedAt+60000):now,start=Math.max(sessionStartedAt,end-3600000);
-      const x=time=>left+(time-start)/Math.max(1,end-start)*(right-left),y=value=>bottom-(value-min)/(max-min)*(bottom-top);
-      let markup='';for(let i=0;i<=3;i++){const value=min+(max-min)*i/3,yy=y(value);markup+='<line x1="'+left+'" y1="'+yy+'" x2="'+right+'" y2="'+yy+'" stroke="#eaf0f3" stroke-dasharray="4 5"/><text x="'+(left-9)+'" y="'+(yy+4)+'" text-anchor="end" fill="#8b9aa5" font-size="11">'+value.toFixed(1)+'</text>';}
-      const labels=compact?2:4;
-      for(let i=0;i<=labels;i++){const time=start+(end-start)*i/labels;markup+='<text x="'+(left+(right-left)*i/labels)+'" y="176" text-anchor="middle" fill="#8b9aa5" font-size="11">'+hhmmss(time)+'</text>';}
-      if(points.length){let d='',previous=null;for(const p of points){d+=(previous===null||p.time-previous>STALE?'M':'L')+x(p.time).toFixed(2)+','+y(p.value).toFixed(2)+' ';previous=p.time;}
-        markup+='<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
-        if(points.length<=60)for(const p of points)markup+='<circle cx="'+x(p.time).toFixed(2)+'" cy="'+y(p.value).toFixed(2)+'" r="2.5" fill="'+color+'"/>';
-        const last=points[points.length-1];markup+='<circle cx="'+x(last.time).toFixed(2)+'" cy="'+y(last.value).toFixed(2)+'" r="4" fill="'+color+'" stroke="white" stroke-width="2"/>';
-      }
-      svg.innerHTML=markup;
-    }
-  }
-  $('exportBtn').addEventListener('click',()=>{
-    if(!records.length)return;
-    const lines=['mode,received_at,temperature_c,temperature_time,humidity_percent,humidity_time'];
-    for(const r of records)lines.push([mode==='demo'?'demo':'real',new Date(r.receivedAt).toISOString(),r.temperature?.value??'',r.temperature?new Date(r.temperature.time).toISOString():'',r.humidity?.value??'',r.humidity?new Date(r.humidity.time).toISOString():''].join(','));
-    const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download=(mode==='demo'?'模拟数据-':'真实数据-')+'温湿度-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);log('已导出 '+records.length+' 条记录。');
-  });
-  document.querySelectorAll('[data-chart]').forEach(button=>button.addEventListener('click',()=>{
-    document.querySelectorAll('[data-chart]').forEach(tab=>tab.setAttribute('aria-pressed',String(tab===button)));
-    for(const metric of ['temperature','humidity'])$(metric+'Plot').classList.toggle('selected',button.dataset.chart===metric);
-    renderCharts();
-  }));
-  window.addEventListener('resize',renderCharts);
-  window.addEventListener('online',()=>{if(active&&phase==='reconnecting'){if(config?.transport==='https'){clearTimeout(pollTimer);pollHttps(generation);}else{clearTimeout(reconnectTimer);openSocket(generation);}}});
-  window.addEventListener('offline',()=>{if(active){notice('当前网络已离线，恢复网络后将重新连接。','warn');if(client)client.close();}});
-  window.addEventListener('pagehide',()=>{shutdown();stopDemo();});
-  window.addEventListener('pageshow',event=>{if(event.persisted){mode='real';badge('已断开');if(!startAutomaticConnection())notice('页面已恢复，请重新连接实时数据。');tick();}});
-  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){tick();if(active&&config?.transport==='https'&&!pollController){clearTimeout(pollTimer);pollHttps(generation);}else if(active&&phase==='subscribed'&&client?.readyState===WebSocket.OPEN&&pingOutstanding){client.close();}}});
-  log('页面已就绪，正在检查自动连接配置。');renderCharts();tick();setInterval(tick,1000);setTimeout(startAutomaticConnection,0);
+(()=>{'use strict';
+const $=id=>document.getElementById(id),preset=JSON.parse($('connectionPreset').textContent),PERIOD=10000,STALE=30000,RETENTION=7*86400000,MAX_RECORDS=60480,PAGE_SIZE=50;
+const tz={timeZone:'Asia/Shanghai',hour12:false},timeFmt=new Intl.DateTimeFormat('zh-CN',{...tz,hour:'2-digit',minute:'2-digit',second:'2-digit'}),dateFmt=new Intl.DateTimeFormat('zh-CN',{...tz,year:'numeric',month:'2-digit',day:'2-digit'}),dayFmt=new Intl.DateTimeFormat('zh-CN',{...tz,month:'2-digit',day:'2-digit'});
+const time=t=>timeFmt.format(t),full=t=>dateFmt.format(t)+' '+time(t),metrics=['temperature','humidity'];
+let records=[],latest={temperature:null,humidity:null},phase='idle',active=false,token='',generation=0,controller=null,timer=null,nextReadAt=0,lastReadAt=0,sessionCount=0,range='1',view='charts',page=0,db=null,historyLoaded=false,storageOK=true,visibleRows=[],lastRenderMinute=0;
+$('deviceName').textContent=preset.deviceName||'temperature_humidity';
+function log(text){const li=document.createElement('li'),stamp=document.createElement('time');stamp.textContent=time(Date.now());li.append(stamp,document.createTextNode(text));$('log').prepend(li);while($('log').children.length>35)$('log').lastChild.remove();}
+function notice(text,kind=''){const el=$('notice');el.textContent=text;el.className='notice '+kind;el.hidden=!kind;}
+function badge(text,kind=''){const el=$('connectionBadge');el.textContent=text;el.className='badge '+kind;}
+function validReading(item){if(!item||item.value===null||item.value===undefined||item.value==='')return null;const value=Number(item.value);let stamp=Number(item.time);if(!Number.isFinite(stamp))stamp=Date.parse(item.time);else if(stamp>0&&stamp<1e11)stamp*=1000;if(!Number.isFinite(value)||!Number.isFinite(stamp)||stamp<=0||stamp>Date.now()+300000)return null;return {value,time:stamp};}
+function sampleTime(r){return Math.max(r.temperature?.time||0,r.humidity?.time||0);}
+function validRecord(r){return r&&typeof r.id==='string'&&Number.isFinite(r.sampleAt)&&r.sampleAt>=Date.now()-RETENTION&&r.sampleAt<=Date.now()+300000&&metrics.some(m=>r[m]&&Number.isFinite(r[m].value)&&Number.isFinite(r[m].time));}
+function openHistory(){return new Promise((resolve,reject)=>{if(!window.indexedDB){reject(Error('storage'));return;}const request=indexedDB.open('iot-records-v2-'+preset.productKey+'-'+(preset.deviceName||'temperature_humidity'),1);request.onupgradeneeded=()=>{const store=request.result.createObjectStore('records',{keyPath:'id'});store.createIndex('sampleAt','sampleAt');};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(Error('storage'));request.onblocked=()=>reject(Error('blocked'));});}
+async function loadHistory(myGeneration){if(historyLoaded)return;historyLoaded=true;try{const opened=await openHistory();if(myGeneration!==generation){opened.close();return;}db=opened;db.onversionchange=()=>{opened.close();if(db===opened)db=null;};const saved=await new Promise((resolve,reject)=>{const request=db.transaction('records').objectStore('records').index('sampleAt').getAll(IDBKeyRange.lowerBound(Date.now()-RETENTION));request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(Error('storage'));});if(myGeneration!==generation)return;records=saved.filter(validRecord).sort((a,b)=>a.sampleAt-b.sampleAt).slice(-MAX_RECORDS);pruneHistory();log('已恢复此浏览器保存的 '+records.length+' 条记录。');}catch{storageOK=false;log('本地存储不可用，本次记录仍可查看和导出。');}renderData();}
+function pruneHistory(){if(!db)return;try{const tx=db.transaction('records','readwrite'),store=tx.objectStore('records');const request=store.index('sampleAt').openCursor(IDBKeyRange.upperBound(Date.now()-RETENTION));request.onsuccess=()=>{const cursor=request.result;if(cursor){cursor.delete();cursor.continue();}};tx.onerror=()=>{storageOK=false;};}catch{storageOK=false;}}
+function saveRecord(record,removed){if(!db)return;try{const tx=db.transaction('records','readwrite'),store=tx.objectStore('records');store.put(record);for(const item of removed)store.delete(item.id);tx.onerror=()=>{storageOK=false;};}catch{storageOK=false;}}
+function accept(payload){if(payload.productKey!==preset.productKey||payload.deviceName!==($('deviceName').textContent))throw Error('数据来源与目标传感器不一致');const incoming={temperature:validReading(payload.items?.[preset.temperatureKey]),humidity:validReading(payload.items?.[preset.humidityKey])};if(!incoming.temperature&&!incoming.humidity)throw Error('未识别到有效温湿度字段');for(const m of metrics)if(incoming[m]&&(!latest[m]||incoming[m].time>=latest[m].time))latest[m]=incoming[m];const row={temperature:incoming.temperature,humidity:incoming.humidity,receivedAt:Date.now()};row.sampleAt=sampleTime(row);row.id=String(row.temperature?.time||0)+':'+String(row.humidity?.time||0);const existing=records.findIndex(r=>r.id===row.id);let changed=false;if(row.sampleAt>=Date.now()-RETENTION){if(existing>=0){if(metrics.some(m=>records[existing][m]?.value!==row[m]?.value)){records[existing]=row;changed=true;}}else{records.push(row);changed=true;}if(changed){records.sort((a,b)=>a.sampleAt-b.sampleAt);const removed=[];while(records.length&&(records[0].sampleAt<Date.now()-RETENTION||records.length>MAX_RECORDS))removed.push(records.shift());saveRecord(row,removed);sessionCount++;$('sessionCount').textContent=sessionCount;for(const m of metrics)if(row[m]){$(m+'Card').classList.remove('pulse');void $(m+'Card').offsetWidth;$(m+'Card').classList.add('pulse');}if(sessionCount===1)log('已收到真实传感器数据。');}}renderData();tick();}
+async function poll(myGeneration){if(!active||myGeneration!==generation||controller)return;clearTimeout(timer);controller=new AbortController();const pending=controller,timeout=setTimeout(()=>pending.abort(),8000);try{const response=await fetch(preset.endpoint,{headers:{Authorization:'Bearer '+token},mode:'cors',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer',signal:pending.signal});if(!active||myGeneration!==generation)return;if(response.status===401||response.status===403){stop();phase='unauthorized';badge('访问凭据无效','bad');notice('请使用包含有效查看凭据的完整个人链接。','bad');log('数据接口拒绝了当前查看凭据。');return;}if(!response.ok)throw Error('数据接口暂时不可用');const payload=await response.json();if(!active||myGeneration!==generation)return;await loadHistory(myGeneration);if(!active||myGeneration!==generation)return;phase='connected';lastReadAt=Date.now();accept(payload);notice('');}catch(error){if(!active||myGeneration!==generation)return;phase='reconnecting';badge('连接中断','warn');notice(error.name==='AbortError'?'读取超时，10 秒后自动重试。已有数据保留。':'暂时无法读取数据，10 秒后自动重试。已有数据保留。','warn');log(error.name==='AbortError'?'HTTPS 请求超时。':'HTTPS 读取未成功，将自动重试。');tick();}finally{clearTimeout(timeout);if(controller===pending)controller=null;if(active&&myGeneration===generation){nextReadAt=Date.now()+PERIOD;timer=setTimeout(()=>poll(myGeneration),PERIOD);}}}
+function stop(){active=false;generation++;clearTimeout(timer);timer=null;nextReadAt=0;if(controller){controller.abort();controller=null;}token='';if(db){db.close();db=null;}}
+function start(){stop();records=[];visibleRows=[];latest={temperature:null,humidity:null};sessionCount=0;lastReadAt=0;historyLoaded=false;storageOK=true;page=0;$('sessionCount').textContent='0';phase='idle';renderData();tick();try{const endpoint=new URL(preset.endpoint);if(endpoint.protocol!=='https:'||!endpoint.hostname.endsWith('.fcapp.run')||endpoint.username||endpoint.password||endpoint.search||endpoint.hash)throw Error('数据接口地址无效');token=preset.readToken||new URLSearchParams(location.hash.slice(1)).get('token')||'';if(!/^[A-Za-z0-9_-]{32,}$/.test(token)){badge('等待个人链接','warn');notice('请使用包含查看凭据的完整个人链接打开看板。','warn');return;}active=true;phase='connecting';badge('正在连接');poll(generation);}catch{badge('连接配置无效','bad');notice('看板的数据接口配置无效，请使用已发布的个人链接。','bad');}}
+function filtered(){const cutoff=range==='all'?Date.now()-RETENTION:Date.now()-Number(range)*3600000;return records.filter(r=>r.sampleAt>=cutoff);}
+function metricPoints(rows,metric){const seen=new Set(),points=[];const cutoff=range==='all'?Date.now()-RETENTION:Date.now()-Number(range)*3600000;for(const r of rows){const reading=r[metric];if(!reading||reading.time<cutoff||seen.has(reading.time))continue;seen.add(reading.time);points.push({time:reading.time,value:reading.value,segment:0});}points.sort((a,b)=>a.time-b.time);let previous=0,segment=0;for(const point of points){if(previous&&point.time-previous>STALE)segment++;point.segment=segment;previous=point.time;}return points;}
+function downsample(points,limit){if(points.length<=limit)return points;const size=Math.ceil(points.length/Math.max(1,Math.floor(limit/4))),output=[];for(let offset=0;offset<points.length;offset+=size){const bucket=points.slice(offset,offset+size);let low=bucket[0],high=bucket[0];for(const point of bucket){if(point.value<low.value)low=point;if(point.value>high.value)high=point;}const selected=[bucket[0],low,high,bucket[bucket.length-1]];selected.sort((a,b)=>a.time-b.time);for(const p of selected)if(output[output.length-1]!==p)output.push(p);}return output;}
+function chart(metric,rows){const svg=$(metric+'Chart'),raw=metricPoints(rows,metric),width=Math.max(200,Math.round(svg.clientWidth)||340),height=212,left=42,right=width-13,top=20,bottom=174,color=metric==='temperature'?'#f3454c':'#3780f6';svg.setAttribute('viewBox','0 0 '+width+' '+height);$(metric+'Empty').hidden=raw.length>0;let min=metric==='temperature'?20:40,max=metric==='temperature'?30:80;if(raw.length){min=Infinity;max=-Infinity;for(const point of raw){min=Math.min(min,point.value);max=Math.max(max,point.value);}const margin=metric==='temperature'?1:2;min=Math.floor(min-margin);max=Math.ceil(max+margin);if(metric==='humidity'){min=Math.max(0,min);max=Math.min(100,max);}if(max<=min)max=min+1;}const start=raw.length?raw[0].time:Date.now()-3600000,end=raw.length?Math.max(raw[raw.length-1].time,start+60000):Date.now(),x=t=>left+(t-start)/Math.max(1,end-start)*(right-left),y=v=>bottom-(v-min)/(max-min)*(bottom-top);let markup='';for(let i=0;i<4;i++){const value=min+(max-min)*i/3,yy=y(value);markup+='<line x1="'+left+'" y1="'+yy+'" x2="'+right+'" y2="'+yy+'" stroke="#eaf0f6" stroke-dasharray="4 4"/><text x="'+(left-8)+'" y="'+(yy+4)+'" text-anchor="end" fill="#9ca7b6" font-size="10">'+value.toFixed(1)+'</text>';}for(let i=0;i<3;i++){const stamp=start+(end-start)*i/2;const label=end-start>86400000?dayFmt.format(stamp):time(stamp).slice(0,5);markup+='<text x="'+(left+(right-left)*i/2)+'" y="201" text-anchor="middle" fill="#9ca7b6" font-size="10">'+label+'</text>';}const points=downsample(raw,Math.max(100,Math.floor(width*2)));let path='',previous=null;for(const p of points){path+=(previous&&p.segment===previous.segment?'L':'M')+x(p.time).toFixed(2)+','+y(p.value).toFixed(2)+' ';previous=p;}if(points.length){markup+='<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';if(points.length<40)for(const p of points)markup+='<circle cx="'+x(p.time).toFixed(2)+'" cy="'+y(p.value).toFixed(2)+'" r="2.4" fill="'+color+'"/>';const last=points[points.length-1];markup+='<circle cx="'+x(last.time).toFixed(2)+'" cy="'+y(last.value).toFixed(2)+'" r="3.5" fill="'+color+'" stroke="white" stroke-width="1.5"/>';}svg.innerHTML=markup;}
+function renderTable(rows){const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));page=Math.max(0,Math.min(page,pages-1));const slice=rows.slice().reverse().slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE),fragment=document.createDocumentFragment();for(const row of slice){const tr=document.createElement('tr'),stamp=document.createElement('td'),date=document.createElement('small'),clock=document.createElement('time');date.textContent=dayFmt.format(row.sampleAt);clock.textContent=time(row.sampleAt);clock.dateTime=new Date(row.sampleAt).toISOString();stamp.append(date,clock);tr.append(stamp);for(const metric of metrics){const cell=document.createElement('td'),reading=row[metric];cell.className=metric==='temperature'?'temp':'humidity-value';cell.textContent=reading?reading.value.toFixed(metric==='temperature'?2:1):'--';cell.title=reading?'上报时间 '+full(reading.time):'此条记录没有该通道的数据';tr.append(cell);}fragment.append(tr);}if(!slice.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=3;td.className='empty-row';td.textContent='所选时间范围暂无记录';tr.append(td);fragment.append(tr);}$('detailsBody').replaceChildren(fragment);$('pageLabel').textContent=(page+1)+' / '+pages;$('prevPage').disabled=page===0;$('nextPage').disabled=page>=pages-1;}
+function renderData(){visibleRows=filtered();$('messageCount').textContent=records.length;$('exportBtn').disabled=!visibleRows.length;$('recordNote').textContent='所选时间范围共 '+visibleRows.length+' 条记录'+(view==='table'?' · 最新优先':'');if(view==='charts')for(const metric of metrics)chart(metric,visibleRows);else renderTable(visibleRows);for(const metric of metrics){const points=metricPoints(visibleRows,metric);let min=Infinity,max=-Infinity,sum=0;for(const p of points){min=Math.min(min,p.value);max=Math.max(max,p.value);sum+=p.value;}const digits=metric==='temperature'?2:1,unit=metric==='temperature'?' °C':' %RH';$(metric+'Stats').textContent=points.length?'均 '+(sum/points.length).toFixed(digits)+' / 低 '+min.toFixed(digits)+' / 高 '+max.toFixed(digits)+unit:'均 -- / 低 -- / 高 --'+unit;}$('storageNote').textContent=storageOK?'保留此浏览器已采集的最近 7 天数据。网页关闭期间不采集，未采集的时段无记录。':'此浏览器未允许本地保存，目前仅保留本次打开期间的记录，可随时导出。';}
+function tick(){const now=Date.now();let fresh=0;for(const metric of metrics){const value=latest[metric],age=value?Math.max(0,now-value.time):Infinity,stale=age>STALE;if(value&&!stale)fresh++;$(metric+'Value').textContent=value?value.value.toFixed(metric==='temperature'?2:1):'--';$(metric+'Time').textContent=value?full(value.time):'尚无'+(metric==='temperature'?'温度':'湿度')+'数据';if(value)$(metric+'Time').dateTime=new Date(value.time).toISOString();$(metric+'Age').textContent=value?(stale?'上报已过期 · ':'上报于 ')+Math.floor(age/1000)+' 秒前':'等待上报';$(metric+'Card').classList.toggle('stale',!!value&&stale);}$('latestReport').textContent=latest.temperature||latest.humidity?full(Math.max(latest.temperature?.time||0,latest.humidity?.time||0)):'--';$('channelStatus').textContent=latest.temperature||latest.humidity?'采集通道 '+fresh+'/2 '+(fresh===2?'正常':'数据过期'):'等待传感器上报';$('channelStatus').classList.toggle('stale',fresh<2);$('lastRefresh').textContent=lastReadAt?time(lastReadAt):'--';$('freshness').textContent=phase==='connected'?(fresh===2?'数据新鲜':'数据过期'):phase==='reconnecting'?'连接已中断':'等待连接';$('countdown').textContent=active&&nextReadAt?Math.max(0,Math.ceil((nextReadAt-now)/1000))+' 秒':'--';if(phase==='connected')badge(fresh===2?'数据实时':'数据过期',fresh===2?'good':'warn');if(Math.floor(now/60000)!==lastRenderMinute){lastRenderMinute=Math.floor(now/60000);renderData();}}
+document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>{view=button.dataset.view;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));$('chartsPanel').hidden=view!=='charts';$('tablePanel').hidden=view!=='table';renderData();}));
+document.querySelectorAll('[data-range]').forEach(button=>button.addEventListener('click',()=>{range=button.dataset.range;page=0;document.querySelectorAll('[data-range]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderData();}));
+$('prevPage').addEventListener('click',()=>{page--;renderTable(visibleRows);$('tablePanel').querySelector('.table-scroll').scrollTop=0;});$('nextPage').addEventListener('click',()=>{page++;renderTable(visibleRows);$('tablePanel').querySelector('.table-scroll').scrollTop=0;});
+$('exportBtn').addEventListener('click',()=>{if(!visibleRows.length)return;const lines=['时间,温度(°C),湿度(%RH),温度上报时间,湿度上报时间'];for(const r of visibleRows)lines.push([full(r.sampleAt),r.temperature?.value??'',r.humidity?.value??'',r.temperature?full(r.temperature.time):'',r.humidity?full(r.humidity.time):''].join(','));const objectURL=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'})),link=document.createElement('a');link.href=objectURL;link.download='温湿度明细-'+new Date().toISOString().slice(0,10)+'.csv';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(objectURL),1000);log('已导出当前范围内 '+visibleRows.length+' 条记录。');});
+$('infoBtn').addEventListener('click',()=>{$('information').open=!$('information').open;if($('information').open)$('information').scrollIntoView({behavior:'smooth',block:'nearest'});});
+$('diagnosticBtn').addEventListener('click',async()=>{const report={version:'2026-10-26.5',phase,time:new Date().toISOString(),networkOnline:navigator.onLine,storedRecords:records.length,messages:sessionCount,lastRead:lastReadAt?new Date(lastReadAt).toISOString():null,storageAvailable:storageOK,logs:Array.from($('log').children).map(el=>el.textContent)};const box=$('diagnosticText');box.hidden=false;box.value=JSON.stringify(report,null,2);box.focus();box.select();try{await navigator.clipboard.writeText(box.value);$('diagnosticBtn').textContent='已复制（不含凭据）';}catch{$('diagnosticBtn').textContent='请复制下方诊断文字';}});
+window.addEventListener('resize',()=>{if(view==='charts')for(const metric of metrics)chart(metric,visibleRows);});window.addEventListener('hashchange',start);window.addEventListener('online',()=>{if(active&&!controller)poll(generation);});window.addEventListener('offline',()=>{if(active){phase='reconnecting';badge('网络已断开','warn');notice('当前网络已离线，恢复后会继续读取。','warn');}});window.addEventListener('pagehide',stop);window.addEventListener('pageshow',event=>{if(event.persisted)start();});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){tick();if(active&&!controller)poll(generation);}});
+log('正式版已载入，正在连接真实传感器。');start();setInterval(tick,1000);
 })();
 </script>
 </body>
